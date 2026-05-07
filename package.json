@@ -1,0 +1,17 @@
+{
+  "name": "habitat-service",
+  "version": "1.0.0",
+  "description": "Waterworld Habitat gRPC microservice",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.3",
+    "@grpc/proto-loader": "^0.7.15",
+    "consul": "^2.0.1",
+    "install": "^0.13.0",
+    "npm": "^11.14.0"
+  }
+}
