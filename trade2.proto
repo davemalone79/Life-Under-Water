@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package trade;
+
+service TradeService {
+  rpc GetResourcePrice (ResourceRequest) returns (ResourceResponse);
+  rpc StreamMarketUpdates (MarketRequest) returns (stream MarketUpdate);
+  rpc UploadTradeBatch (stream TradeItem) returns (BatchTradeResponse);
+  rpc LiveTrading (stream TradeCommand) returns (stream TradeEvent);
+
+  // NEW RPC
+  rpc GrantFreeResource (FreeResourceRequest) returns (FreeResourceResponse);
+}
+
+message ResourceRequest {
+  string resource_name = 1;
+}
+
+message ResourceResponse {
+  string resource_name = 1;
+  double price = 2;
+  string currency = 3;
+}
+
+message MarketRequest {
+  string sector = 1;
+}
+
+message MarketUpdate {
+  string sector = 1;
+  string resource_name = 2;
+  double price = 3;
+  string timestamp = 4;
+}
+
+message TradeItem {
+  string item_id = 1;
+  string resource_name = 2;
+  int32 quantity = 3;
+}
+
+message BatchTradeResponse {
+  int32 total_received = 1;
+  bool success = 2;
+  string message = 3;
+}
+
+message TradeCommand {
+  string command_type = 1;
+  string resource_name = 2;
+  int32 quantity = 3;
+}
+
+message TradeEvent {
+  string event_type = 1;
+  string resource_name = 2;
+  int32 quantity = 3;
+  string timestamp = 4;
+}
+
+// NEW ENUM
+enum GrantReason {
+  UNKNOWN = 0;
+  CITIZEN_OF_THE_WEEK = 1;
+  RELIEF = 2;
+  SOCIAL_SUPPORT = 3;
+  PRIZE = 4;
+}
+
+// NEW REQUEST
+message FreeResourceRequest {
+  string citizen_id = 1;
+  string resource_name = 2;
+  int32 quantity = 3;
+  GrantReason reason = 4;
+}
+
+// NEW RESPONSE
+message FreeResourceResponse {
+  bool success = 1;
+  string message = 2;
+  int32 remaining_stock = 3;
+}
